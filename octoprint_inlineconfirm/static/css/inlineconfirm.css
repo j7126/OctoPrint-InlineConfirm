@@ -1,0 +1,12 @@
+#state_wrapper .row-fluid.print-control button#job_cancel {
+    transition: width 0.5s;
+    position: absolute;
+    right: 15px;
+    width: calc(0.31914893617021278 * (100% - 30px));
+}
+
+#state_wrapper .row-fluid.print-control button#job_cancel.confirm {
+    width: calc(100% - 30px)!important;
+    background: red;
+    color: white;
+}
