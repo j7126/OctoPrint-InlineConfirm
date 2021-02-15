@@ -9,4 +9,5 @@
     width: calc(100% - 30px)!important;
     background: red;
     color: white;
+    z-index: 1;
 }
