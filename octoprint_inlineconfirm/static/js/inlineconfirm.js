@@ -17,8 +17,10 @@ $(function () {
 
         // startup complete
         self.onStartupComplete = function () {
-            $('#state_wrapper .row-fluid.print-control button#job_cancel').unbind();
-            $('#state_wrapper .row-fluid.print-control button#job_cancel').click(self.jobCancel);
+            if ($('html#touch').val() == undefined) {
+                $('#state_wrapper .row-fluid.print-control button#job_cancel').unbind();
+                $('#state_wrapper .row-fluid.print-control button#job_cancel').click(self.jobCancel);
+            }
         }
 
         var jobCanceling = false;

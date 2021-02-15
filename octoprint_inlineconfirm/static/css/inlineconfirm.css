@@ -5,6 +5,11 @@
     width: calc(0.31914893617021278 * (100% - 30px));
 }
 
+#touch #state_wrapper .row-fluid.print-control button#job_cancel {
+    position: unset;
+    right: unset;
+}
+
 #state_wrapper .row-fluid.print-control button#job_cancel.confirm {
     width: calc(100% - 30px)!important;
     background: red;
