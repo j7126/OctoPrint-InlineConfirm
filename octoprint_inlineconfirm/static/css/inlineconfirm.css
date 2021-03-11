@@ -46,3 +46,15 @@
     position: unset;
     left: unset;
 }
+
+.preheatPluginEnabled#state_wrapper .row-fluid.print-control button#job_print {
+    position: unset;
+}
+
+.preheatPluginEnabled#state_wrapper .row-fluid.print-control button#job_pause {
+    position: unset;
+}
+
+.preheatPluginEnabled#state_wrapper .row-fluid.print-control button#job_print.confirm {
+    width: 100%!important;
+}

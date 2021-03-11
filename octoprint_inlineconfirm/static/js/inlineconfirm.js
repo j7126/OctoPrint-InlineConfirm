@@ -14,6 +14,7 @@ $(function () {
         var self = this;
 
         self.printerStateModel = parameters[0];
+        self.settingsViewModel = parameters[1];
 
         // startup complete
         self.onStartupComplete = function () {
@@ -22,6 +23,9 @@ $(function () {
                 $('#state_wrapper .row-fluid.print-control button#job_cancel').click(self.jobCancel);
                 $('#state_wrapper .row-fluid.print-control button#job_print').unbind();
                 $('#state_wrapper .row-fluid.print-control button#job_print').click(self.jobPrint);
+            }
+            if (self.settingsViewModel.settings.plugins.preheat) {
+                $('#state_wrapper').addClass('preheatPluginEnabled');
             }
         }
 
@@ -113,7 +117,7 @@ $(function () {
     // view model class, parameters for constructor, container to bind to
     OCTOPRINT_VIEWMODELS.push({
         construct: InlineConfirmViewModel,
-        dependencies: ["printerStateViewModel"]
+        dependencies: ["printerStateViewModel", "settingsViewModel"]
     });
 
 });
