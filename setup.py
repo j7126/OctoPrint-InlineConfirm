@@ -16,11 +16,11 @@ plugin_package = "octoprint_inlineconfirm"
 plugin_name = "OctoPrint-InlineConfirm"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.0.1"
+plugin_version = "1.1.0"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """Removes the confirm cancel print dialog in OctoPrint and replaces it with confirmation by clicking the cancel buton twice."""
+plugin_description = """Removes the confirm dialogs from the print state controls and replaces them with clicking the button twice."""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
 plugin_author = "j7126"
