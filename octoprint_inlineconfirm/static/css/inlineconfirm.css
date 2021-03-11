@@ -16,3 +16,33 @@
     color: white;
     z-index: 1;
 }
+
+#state_wrapper .row-fluid.print-control button#job_print {
+    transition: width 0.5s;
+    position: absolute;
+    left: 15px;
+    width: calc(0.31914893617021278 * (100% - 30px));
+}
+
+#touch #state_wrapper .row-fluid.print-control button#job_print {
+    position: unset;
+    left: unset;
+}
+
+#state_wrapper .row-fluid.print-control button#job_print.confirm {
+    width: calc(100% - 30px)!important;
+    background: green;
+    color: white;
+    z-index: 1;
+}
+
+#state_wrapper .row-fluid.print-control button#job_pause {
+    position: relative;
+    left: calc(0.31914893617021278 * (100% - 30px) + 10px);
+    width: calc(0.31914893617021278 * (100% - 30px) + 10px);
+}
+
+#touch #state_wrapper .row-fluid.print-control button#job_pause {
+    position: unset;
+    left: unset;
+}

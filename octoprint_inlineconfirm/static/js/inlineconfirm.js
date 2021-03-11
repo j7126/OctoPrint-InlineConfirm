@@ -20,49 +20,93 @@ $(function () {
             if ($('html#touch').val() == undefined) {
                 $('#state_wrapper .row-fluid.print-control button#job_cancel').unbind();
                 $('#state_wrapper .row-fluid.print-control button#job_cancel').click(self.jobCancel);
+                $('#state_wrapper .row-fluid.print-control button#job_print').unbind();
+                $('#state_wrapper .row-fluid.print-control button#job_print').click(self.jobPrint);
             }
         }
 
-        var jobCanceling = false;
-        var jobCancelI = null;
         var jobCancelOldText = '';
-        self.jobCancel = function (e) {
-            e.preventDefault();
-            if (jobCanceling) {
-                $('#state_wrapper .row-fluid.print-control button#job_cancel').textNodes().first().replaceWith(jobCancelOldText);
-                $('#state_wrapper .row-fluid.print-control button#job_cancel').removeClass('confirm');
-                clearInterval(jobCancelI);
-                jobCancelI = null;
-                OctoPrint.job.cancel();
-                $('#state_wrapper .row-fluid.print-control button#job_cancel > span').remove();
-                jobCanceling = false;
-            } else if (!self.printerStateModel.settings.feature_printCancelConfirmation()) {
-                OctoPrint.job.cancel();
-            } else {
-                jobCanceling = true;
-                jobCancelOldText = $('#state_wrapper .row-fluid.print-control button#job_cancel').textNodes().first().text();
-                $('#state_wrapper .row-fluid.print-control button#job_cancel').addClass('confirm');
-                var t = 5;
-                var setText = function () {
-                    $('#state_wrapper .row-fluid.print-control button#job_cancel > span').remove();
-                    $('#state_wrapper .row-fluid.print-control button#job_cancel').textNodes().first().replaceWith(' Click again to confirm cancel <span>(' + t-- + ')</span>');
-                }
-                setTimeout(() => {
-                    if (jobCanceling)
-                        setText();
-                }, 500);
-                jobCancelI = setInterval(function () {
-                    if (t < 0) {
-                        $('#state_wrapper .row-fluid.print-control button#job_cancel').textNodes().first().replaceWith(jobCancelOldText);
-                        $('#state_wrapper .row-fluid.print-control button#job_cancel').removeClass('confirm');
-                        $('#state_wrapper .row-fluid.print-control button#job_cancel > span').remove();
-                        clearInterval(jobCancelI);
-                        jobCanceling = false;
-                        jobCancelI = null;
-                    } else
-                        setText();
-                }, 1000);
+        self.jobCancel = InlineConfirm(
+            '#state_wrapper .row-fluid.print-control button#job_cancel',
+            self.printerStateModel.settings.feature_printCancelConfirmation,
+            function () { OctoPrint.job.cancel(); },
+            function (button, t) {
+                $(button + ' > span').remove();
+                $(button).textNodes().first().replaceWith(' Click again to confirm cancel <span>(' + t + ')</span>');
+            },
+            function (button) {
+                jobCancelOldText = $(button).textNodes().first().text();
+            },
+            function (button) {
+                console.log('a');
+                $(button).textNodes().first().replaceWith(jobCancelOldText);
+                $(button + ' > span').remove();
             }
+        );
+        var jobPrintOldText = '';
+        self.jobPrint = InlineConfirm(
+            '#state_wrapper .row-fluid.print-control button#job_print',
+            function () {
+                return self.printerStateModel.settings.feature_printStartConfirmation() || self.printerStateModel.isPaused();
+            },
+            function () {
+                if (self.printerStateModel.isPaused())
+                    OctoPrint.job.restart();
+                else
+                    OctoPrint.job.start();
+            },
+            function (button, t) {
+                $(button + ' > span > span').remove();
+                $(button + ' > span').html(' Click again to confirm print ' + (self.printerStateModel.isPaused() ? 'restart' : 'start') + ' <span>(' + t + ')</span>');
+            },
+            function (button) {
+                jobPrintOldText = $(button + ' > span').html();
+            },
+            function (button, oldtext) {
+                $(button + ' > span').html(jobPrintOldText);
+            }
+        );
+
+        function InlineConfirm(button, condition, action, setText, start, end) {
+            var confirming = false;
+            var interval = null;
+            var f = function (e) {
+                e.preventDefault();
+                if (confirming) {
+                    end(button);
+                    $(button).removeClass('confirm');
+                    clearInterval(interval);
+                    interval = null;
+                    action();
+                    confirming = false;
+                } else if (!condition()) {
+                    action();
+                } else {
+                    start(button);
+                    confirming = true;
+                    $(button).addClass('confirm');
+                    var t = 5;
+                    setTimeout(() => {
+                        if (confirming) {
+                            setText(button, t);
+                            t--;
+                        }
+                    }, 500);
+                    interval = setInterval(function () {
+                        if (t < 0) {
+                            end(button);
+                            $(button).removeClass('confirm');
+                            confirming = false;
+                            clearInterval(interval);
+                            interval = null;
+                        } else {
+                            setText(button, t);
+                            t--;
+                        }
+                    }, 1000);
+                }
+            };
+            return f;
         }
     };
 
