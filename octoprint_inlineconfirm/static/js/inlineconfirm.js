@@ -42,7 +42,6 @@ $(function () {
                 jobCancelOldText = $(button).textNodes().first().text();
             },
             function (button) {
-                console.log('a');
                 $(button).textNodes().first().replaceWith(jobCancelOldText);
                 $(button + ' > span').remove();
             }
