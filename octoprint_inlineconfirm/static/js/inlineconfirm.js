@@ -30,20 +30,35 @@ $(function () {
         }
 
         var jobCancelOldText = '';
+        var jobCancelButtonHasSpan = false
         self.jobCancel = InlineConfirm(
             '#state_wrapper .row-fluid.print-control button#job_cancel',
             self.printerStateModel.settings.feature_printCancelConfirmation,
             function () { OctoPrint.job.cancel(); },
             function (button, t) {
-                $(button + ' > span').remove();
-                $(button).textNodes().first().replaceWith(' Click again to confirm cancel <span>(' + t + ')</span>');
+                if (jobCancelButtonHasSpan) {
+                    $(button + ' > span > span').remove();
+                    $(button + ' > span').html(' Click again to confirm cancel <span>(' + t + ')</span>');
+                } else {
+                    $(button + ' > span').remove();
+                    $(button).textNodes().first().replaceWith(' Click again to confirm cancel <span>(' + t + ')</span>');
+                }
             },
             function (button) {
-                jobCancelOldText = $(button).textNodes().first().text();
+                jobCancelButtonHasSpan = $(button).textNodes().first().length == 0
+                if (jobCancelButtonHasSpan)
+                    jobCancelOldText = $(button + ' > span').html();
+                else
+                    jobCancelOldText = $(button).textNodes().first().text();
             },
             function (button) {
-                $(button).textNodes().first().replaceWith(jobCancelOldText);
-                $(button + ' > span').remove();
+                if (jobCancelButtonHasSpan) {
+                    $(button + ' > span').html(jobCancelOldText);
+                }
+                else {
+                    $(button).textNodes().first().replaceWith(jobCancelOldText);
+                    $(button + ' > span').remove();
+                }
             }
         );
         var jobPrintOldText = '';
