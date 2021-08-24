@@ -1,8 +1,12 @@
+#state_wrapper .row-fluid.print-control button {
+    display: inline-block;
+}
+
 #state_wrapper .row-fluid.print-control button#job_cancel {
     transition: width 0.5s;
     position: absolute;
     right: 15px;
-    width: calc(0.31914893617021278 * (100% - 30px));
+    width: calc(0.32 * (100% - 30px));
 }
 
 #touch #state_wrapper .row-fluid.print-control button#job_cancel {
@@ -21,7 +25,7 @@
     transition: width 0.5s;
     position: absolute;
     left: 15px;
-    width: calc(0.31914893617021278 * (100% - 30px));
+    width: calc(0.32 * (100% - 30px));
 }
 
 #touch #state_wrapper .row-fluid.print-control button#job_print {
@@ -38,8 +42,8 @@
 
 #state_wrapper .row-fluid.print-control button#job_pause {
     position: relative;
-    left: calc(0.31914893617021278 * (100% - 30px) + 10px);
-    width: calc(0.31914893617021278 * (100% - 30px) + 10px);
+    left: calc(0.32 * (100% - 30px) + 10px);
+    width: calc(0.32 * (100% - 30px) + 10px);
 }
 
 #touch #state_wrapper .row-fluid.print-control button#job_pause {
@@ -57,4 +61,14 @@
 
 .preheatPluginEnabled#state_wrapper .row-fluid.print-control button#job_print.confirm {
     width: 100%!important;
+}
+
+html.UICDefaultTheme #state_wrapper .row-fluid.print-control button#job_pause {
+    left: calc(0.32 * (100% - 30px) + 8px);
+}
+
+@media (max-width: 767px) {
+    body.UICResponsiveMode #state_wrapper .row-fluid.print-control button#job_pause {
+        left: calc(0.34 * (100% - 30px) + 10px);
+    }
 }
