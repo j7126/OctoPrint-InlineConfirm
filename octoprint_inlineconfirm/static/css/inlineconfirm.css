@@ -1,7 +1,3 @@
-#state_wrapper .row-fluid.print-control button {
-    display: inline-block;
-}
-
 #state_wrapper .row-fluid.print-control button#job_cancel {
     transition: width 0.5s;
     position: absolute;
@@ -70,5 +66,12 @@ html.UICDefaultTheme #state_wrapper .row-fluid.print-control button#job_pause {
 @media (max-width: 767px) {
     body.UICResponsiveMode #state_wrapper .row-fluid.print-control button#job_pause {
         left: calc(0.34 * (100% - 30px) + 10px);
+    }
+    body.UICResponsiveMode #state_wrapper .row-fluid.print-control button {
+        display: inline-block;
+    }
+    body.UICResponsiveMode .preheatPluginEnabled#state_wrapper .row-fluid.print-control button#job_pause, body.UICResponsiveMode .preheatPluginEnabled#state_wrapper .row-fluid.print-control button#job_cancel {
+        margin-bottom: 10px;
+        width: calc(0.48 * (100% - 30px) + 10px);
     }
 }
